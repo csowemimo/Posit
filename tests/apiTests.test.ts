@@ -1,4 +1,5 @@
 import test, { expect } from "@playwright/test";
+import _ from 'lodash';
 
 const url = 'https://swapi.dev/api/planets';
 
@@ -13,17 +14,21 @@ test.describe('Planets API Tests', () => {
         expect(responseBody?.next).toContain('page=2');
         expect(responseBody?.previous).toBeNull();
         expect(responseBody?.results).not.toBeNull();
+
+        const exists = _.some(responseBody?.results, n => n.name === 'Tatooine');
+        expect(exists).toBeTruthy();
   })
   
-  // Verify that the API returns a valid response with a specific planet id
+   // Verify that the API returns a valid response with a specific planet id
   test('GET specific planet - success', async ({ request }) => {
       const planetIdUrl = `${url}/1`;
       const response = await request.get(planetIdUrl);
       expect(response.status()).toBe(200);
   
       const responseBody = await response.json();
-      expect(responseBody?.name).not.toBeNull();
+      expect(responseBody?.name).toBe('Tatooine');
       expect(responseBody?.url).toContain(planetIdUrl);
+
   })
   
   // Verify that the API returns a valid response with a list of planets from a specified page
@@ -36,6 +41,9 @@ test.describe('Planets API Tests', () => {
       expect(responseBody?.next).toContain('page=4');
       expect(responseBody?.previous).toContain('page=2');
       expect(responseBody?.results[0]?.name).not.toBeNull();
+      
+      const exists = _.some(responseBody?.results, n => n.name === 'Eriadu');
+      expect(exists).toBeTruthy();
   })
   
   // Verify that the API returns a 404 response for an invalid planet id
