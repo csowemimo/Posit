@@ -1,4 +1,5 @@
 # Posit Assessment
+Instructions to run API tests
 
 ## Installation
 - Download Playwright
