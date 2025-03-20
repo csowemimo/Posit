@@ -7,6 +7,7 @@ Instructions to run API tests
   - npm init -y
   - npm install -D playwright @playwright/test typescript
   - npx playwright install
+  - npm install lodash
 - The apiTests.test.ts file should be in the tests folder
  
 ## Run test
